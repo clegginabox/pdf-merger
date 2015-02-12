@@ -1,13 +1,13 @@
 {
-    "name": "clegginabox/pdf-merger",
+    "name": "choukk/pdf-merger",
     "description": "PDF File Merger for PHP5",
     "require": {
         "itbz/fpdi": "dev-master"
     },
     "authors": [
         {
-            "name": "Paul Clegg",
-            "email": "paul@clegginabox.co.uk"
+            "name": "Choukk",
+            "email": "cchoukk@gmail.com"
         }
     ],
     "autoload": {
