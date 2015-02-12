@@ -21,7 +21,7 @@
  * such as form fields, links or page annotations (anything not a part of the page content stream).
  *
  */
-namespace Clegginabox\PDFMerger;
+namespace Choukk\PDFMerger;
 
 use Exception;
 use fpdi\FPDI;
@@ -57,9 +57,10 @@ class PDFMerger
      * Merges your provided PDFs and outputs to specified location.
      * @param $outputmode
      * @param $outputname
+     * @param $orientation
      * @return PDF
      */
-    public function merge($outputmode = 'browser', $outputpath = 'newfile.pdf')
+    public function merge($outputmode = 'browser', $outputpath = 'newfile.pdf', $orientation = 'P')
     {
         if (!isset($this->_files) || !is_array($this->_files)) {
             throw new Exception("No PDFs to merge.");
@@ -80,7 +81,7 @@ class PDFMerger
                     $template   = $fpdi->importPage($i);
                     $size       = $fpdi->getTemplateSize($template);
 
-                    $fpdi->AddPage('P', array($size['w'], $size['h']));
+                    $fpdi->AddPage($orientation, array($size['w'], $size['h']));
                     $fpdi->useTemplate($template);
                 }
             } else {
