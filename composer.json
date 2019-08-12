@@ -2,7 +2,7 @@
     "name": "clegginabox/pdf-merger",
     "description": "PDF File Merger for PHP5",
     "require": {
-        "setasign/fpdi": "dev-master"
+        "setasign/fpdi-fpdf": "^2.0"
     },
     "authors": [
         {
