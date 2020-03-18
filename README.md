@@ -9,11 +9,15 @@ I've just forked this package to make it compatible with composer
 
 To install add this line to your composer.json
 
-```"clegginabox/pdf-merger": "dev-master"```
+```
+"clegginabox/pdf-merger": "dev-master"
+```
 
-or
+or  
 
-```composer require clegginabox/pdf-merger: "dev-master"```
+```
+composer require clegginabox/pdf-merger "dev-master"
+```
 
 ### Example Usage
 ```php
