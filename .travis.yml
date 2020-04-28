@@ -1,0 +1,21 @@
+language: php
+
+php:
+    - "7.2"
+    - "7.3"
+    - "7.4"
+
+cache:
+    directories:
+        - $HOME/.composer/cache/files
+
+before_install:
+    - phpenv config-rm xdebug.ini
+    - echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+
+install:
+    - composer install --prefer-dist --no-interaction --no-scripts
+
+script:
+    - ./vendor/bin/php-cs-fixer --dry-run --diff --config=.php_cs.dist
+    - ./vendor/bin/phpunit tests
