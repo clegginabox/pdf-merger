@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  php:
+    image: jmleroux/fpm:php-7.3
+    environment:
+      COMPOSER_HOME: /home/docker/.composer
+      PHP_IDE_CONFIG: 'serverName=jmleroux-cli'
+      PHP_XDEBUG_REMOTE_HOST: 172.17.0.1
+      XDEBUG_CONFIG: 'remote_host=172.17.0.1'
+    user: docker
+    volumes:
+      - ./:/srv/jmleroux
+      - ~/.composer:/home/docker/.composer
+    working_dir: /srv/jmleroux

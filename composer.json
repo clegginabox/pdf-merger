@@ -1,19 +1,34 @@
 {
-    "name": "clegginabox/pdf-merger",
-    "description": "PDF File Merger for PHP5",
-    "require": {
-        "setasign/fpdi": "^2.2",
-        "setasign/fpdf": "^1.8"
-    },
+    "name": "jmleroux/pdf-merger",
+    "description": "PDF File Merger for PHP7",
+    "type": "library",
     "authors": [
         {
             "name": "Paul Clegg",
             "email": "paul@clegginabox.co.uk"
+        },
+        {
+            "name": "JM Leroux",
+            "email": "jmleroux.pro@gmail.com"
         }
     ],
+    "require": {
+        "php": ">=7.2",
+        "setasign/fpdi": "^2.3",
+        "setasign/fpdf": "^1.8"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.1",
+        "friendsofphp/php-cs-fixer": "^2.16"
+    },
     "autoload": {
-        "classmap": [
-            "src/PDFMerger/PDFMerger.php"
-        ]
+        "psr-4": {
+            "Jmleroux\\PDFMerger\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Jmleroux\\Tests\\": "tests/"
+        }
     }
 }
