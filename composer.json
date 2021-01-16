@@ -1,6 +1,7 @@
 {
     "name": "clegginabox/pdf-merger",
     "description": "PDF File Merger for PHP5",
+    "license": "MIT",
     "require": {
         "setasign/fpdi": "^2.2",
         "setasign/fpdf": "^1.8"
