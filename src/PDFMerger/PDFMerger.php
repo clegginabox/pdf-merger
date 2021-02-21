@@ -21,6 +21,7 @@
  * such as form fields, links or page annotations (anything not a part of the page content stream).
  *
  */
+
 namespace Clegginabox\PDFMerger;
 
 use Exception;
@@ -44,13 +45,25 @@ class PDFMerger
                 $pages = $this->_rewritepages($pages);
             }
 
-            $this->_files[] = array($filepath, $pages, $orientation);
+            $this->_files[] = array($filepath, $pages, $orientation, 'pdf');
         } else {
             throw new Exception("Could not locate PDF on '$filepath'");
         }
 
         return $this;
     }
+
+    public function addImage($filepath)
+    {
+        if (file_exists($filepath)) {
+            $this->_files[] = array($filepath, 'all', 'A', 'image');
+        } else {
+            throw new Exception("Could not locate Image on '$filepath'");
+        }
+
+        return $this;
+    }
+
 
     /**
      * Merges your provided PDFs and outputs to specified location.
@@ -68,23 +81,29 @@ class PDFMerger
         $fpdi = new Fpdi();
 
         // merger operations
-        foreach ($this->_files as $file) {
-            $filename  = $file[0];
+        foreach ($this->_files as $index => $file) {
+            $filename = $file[0];
             $filepages = $file[1];
+            $fileType = $file[3];
             $fileorientation = (!is_null($file[2])) ? $file[2] : $orientation;
 
-            $count = $fpdi->setSourceFile($filename);
 
             //add the pages
             if ($filepages == 'all') {
-                for ($i=1; $i<=$count; $i++) {
-                    $template   = $fpdi->importPage($i);
-                    $size       = $fpdi->getTemplateSize($template);
-                    if ($fileorientation === 'A') {
-                        $fileorientation = ($size['width'] > $size['height']) ? 'L' : 'P';
+                if ($fileType === 'pdf') {
+                    $count = $fpdi->setSourceFile($filename);
+                    for ($i = 1; $i <= $count; $i++) {
+                        $template = $fpdi->importPage($i);
+                        $size = $fpdi->getTemplateSize($template);
+                        if ($fileorientation === 'A') {
+                            $fileorientation = ($size['width'] > $size['height']) ? 'L' : 'P';
+                        }
+                        $fpdi->AddPage($fileorientation, array($size['width'], $size['height']));
+                        $fpdi->useTemplate($template);
                     }
-                    $fpdi->AddPage($fileorientation, array($size['width'], $size['height']));
-                    $fpdi->useTemplate($template);
+                } else {
+                    $fpdi->addPage();
+                    $fpdi->Image($filename, 0, 0);
                 }
             } else {
                 foreach ($filepages as $page) {
@@ -123,8 +142,7 @@ class PDFMerger
      */
     private function _switchmode($mode)
     {
-        switch(strtolower($mode))
-        {
+        switch (strtolower($mode)) {
             case 'download':
                 return 'D';
                 break;
@@ -168,11 +186,11 @@ class PDFMerger
 
                 //add middle pages
                 while ($x <= $y) {
-                    $newpages[] = (int) $x;
+                    $newpages[] = (int)$x;
                     $x++;
                 }
             } else {
-                $newpages[] = (int) $ind[0];
+                $newpages[] = (int)$ind[0];
             }
         }
 
