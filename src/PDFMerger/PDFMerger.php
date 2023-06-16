@@ -72,6 +72,7 @@ class PDFMerger
             $filename  = $file[0];
             $filepages = $file[1];
             $fileorientation = (!is_null($file[2])) ? $file[2] : $orientation;
+            $autoOrientation = ($fileorientation === 'A');
 
             $count = $fpdi->setSourceFile($filename);
 
@@ -80,7 +81,7 @@ class PDFMerger
                 for ($i=1; $i<=$count; $i++) {
                     $template   = $fpdi->importPage($i);
                     $size       = $fpdi->getTemplateSize($template);
-                    if ($fileorientation === 'A') {
+                    if ($autoOrientation) {
                         $fileorientation = ($size['width'] > $size['height']) ? 'L' : 'P';
                     }
                     $fpdi->AddPage($fileorientation, array($size['width'], $size['height']));
@@ -92,7 +93,9 @@ class PDFMerger
                         throw new Exception("Could not load page '$page' in PDF '$filename'. Check that the page exists.");
                     }
                     $size = $fpdi->getTemplateSize($template);
-
+                    if ($autoOrientation) {
+                        $fileorientation = ($size['width'] > $size['height']) ? 'L' : 'P';
+                    }
                     $fpdi->AddPage($fileorientation, array($size['width'], $size['height']));
                     $fpdi->useTemplate($template);
                 }
