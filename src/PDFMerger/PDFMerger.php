@@ -80,10 +80,12 @@ class PDFMerger
                 for ($i=1; $i<=$count; $i++) {
                     $template   = $fpdi->importPage($i);
                     $size       = $fpdi->getTemplateSize($template);
-                    if ($fileorientation === 'A') {
-                        $fileorientation = ($size['width'] > $size['height']) ? 'L' : 'P';
+                    $pageOrientation = ($size['width'] > $size['height']) ? 'L' : 'P';  // Determine orientation for this specific page
+
+                    if($fileorientation !== 'A') {  // If an orientation was provided for the whole document, use it
+                        $pageOrientation = $fileorientation;
                     }
-                    $fpdi->AddPage($fileorientation, array($size['width'], $size['height']));
+                    $fpdi->AddPage($pageOrientation, array($size['width'], $size['height']));
                     $fpdi->useTemplate($template);
                 }
             } else {
@@ -92,8 +94,12 @@ class PDFMerger
                         throw new Exception("Could not load page '$page' in PDF '$filename'. Check that the page exists.");
                     }
                     $size = $fpdi->getTemplateSize($template);
+                    $pageOrientation = ($size['width'] > $size['height']) ? 'L' : 'P';  // Determine orientation for this specific page
+                    if($fileorientation !== 'A') {  // If an orientation was provided for the whole document, use it
+                        $pageOrientation = $fileorientation;
+                    }
 
-                    $fpdi->AddPage($fileorientation, array($size['width'], $size['height']));
+                    $fpdi->AddPage($pageOrientation, array($size['width'], $size['height']));
                     $fpdi->useTemplate($template);
                 }
             }
